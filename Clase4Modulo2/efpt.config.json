@@ -17,6 +17,14 @@
       {
          "Name": "[dbo].[parametria]",
          "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[rechazos]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ventas_mensuales]",
+         "ObjectType": 0
       }
    ],
    "UiHint": null,

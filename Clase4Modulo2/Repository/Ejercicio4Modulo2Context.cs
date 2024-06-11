@@ -3,9 +3,7 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Clase4Modulo2.Domain.Entities;
-using Microsoft.Extensions.Logging;
 
 namespace Clase4Modulo2.Repository
 {
@@ -21,12 +19,8 @@ namespace Clase4Modulo2.Repository
         }
 
         public virtual DbSet<Parametria> Parametria { get; set; }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) 
-        {
-            optionsBuilder.LogTo(Console.WriteLine, LogLevel.Information);
-            base.OnConfiguring(optionsBuilder); 
-        }
+        public virtual DbSet<Rechazos> Rechazos { get; set; }
+        public virtual DbSet<VentasMensuales> VentasMensuales { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -47,6 +41,48 @@ namespace Clase4Modulo2.Repository
                     .HasMaxLength(50)
                     .IsUnicode(false)
                     .HasColumnName("value");
+            });
+
+            modelBuilder.Entity<Rechazos>(entity =>
+            {
+                entity.ToTable("rechazos");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.Error)
+                    .IsRequired()
+                    .HasMaxLength(200)
+                    .IsUnicode(false)
+                    .HasColumnName("error");
+
+                entity.Property(e => e.RegistroOriginal)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .IsUnicode(false)
+                    .HasColumnName("registro_original");
+            });
+
+            modelBuilder.Entity<VentasMensuales>(entity =>
+            {
+                entity.ToTable("ventas_mensuales");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.CodVendedor)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("cod_vendedor");
+
+                entity.Property(e => e.Fecha)
+                    .HasColumnType("datetime")
+                    .HasColumnName("fecha");
+
+                entity.Property(e => e.Venta)
+                    .HasColumnType("numeric(11, 2)")
+                    .HasColumnName("venta");
+
+                entity.Property(e => e.VentaEmpresaGrande).HasColumnName("venta_empresa_grande");
             });
 
             OnModelCreatingPartial(modelBuilder);
